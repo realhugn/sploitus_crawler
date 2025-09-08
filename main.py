@@ -141,14 +141,14 @@ async def main():
     print("Sploitus Crawler Starting...")
     print(f"Query: {args.query}")
     print(f"Headless Mode: {args.headless}")
-    print(f"Max Pages: {args.max_pages}")
+    print(f"Max Pages: {args.max_steps}")
     print(f"API Delay: {args.api_delay}s")
     print(f"Output Directory: {args.output_dir}")
     print("-" * 50)
     
     try:
         crawler = SploitusCrawler()
-        exploit_count, json_file = await crawler.run(query=args.query, max_pages=args.max_pages)
+        exploit_count, json_file = await crawler.run(query=args.query, max_steps=args.max_steps)
         
         print(f"\n{'='*60}")
         print(f"CRAWLING COMPLETED SUCCESSFULLY!")

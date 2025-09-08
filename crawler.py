@@ -150,7 +150,7 @@ class SploitusCrawler:
             language=item.get('language')
         )
 
-    async def call_api(self, query: str = "Rce", max_pages: int = 100, step: int = 10) -> List[ExploitData]:
+    async def call_api(self, query: str = "Rce", max_steps: int = 100, step: int = 10) -> List[ExploitData]:
         self.logger.info(f"Starting API crawling for query: {query}")
         
         # Get cookies first
@@ -165,7 +165,7 @@ class SploitusCrawler:
         limits = httpx.Limits(max_keepalive_connections=5, max_connections=10)
         
         with httpx.Client(http2=True, timeout=30, limits=limits) as client:
-            for page_num in range(max_pages):
+            for page_num in range(max_steps):
                 offset = page_num * step
                 
                 try:
@@ -212,13 +212,13 @@ class SploitusCrawler:
         self.logger.info(f"API crawling completed: {len(all_exploits)} unique exploits found")
         return all_exploits
         
-    async def run(self, query: str = "Rce", max_pages: int = 100) -> tuple[int, Path]:
+    async def run(self, query: str = "Rce", max_steps: int = 100) -> tuple[int, Path]:
         start_time = datetime.now()
         self.logger.info(f"Starting Sploitus crawler for query: {query}")
         
         try:
             # Crawl using API
-            exploits = await self.call_api(query, max_pages)
+            exploits = await self.call_api(query, max_steps)
             
             # Deduplicate
             exploits = DataUtils.deduplicate_exploits(exploits)
